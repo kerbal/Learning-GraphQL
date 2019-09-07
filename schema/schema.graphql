@@ -10,11 +10,26 @@ type Mutation {
   createUser(data: CreateUserInput): User!
   createPost(data: CreatePostInput): Post!
   createComment(data: CreateCommentInput): Comment!
+  updatePost(data: UpdatePostInput): Post!
+  deletePost(Id: ID!): Post
+  updateComment(data: UpdateCommentInput): Comment!
+  deleteComment(I: ID!): Comment
 }
 
 type Subscription {
   count: Int!
-  newComment(id: ID!): Comment!
+  comment(PostId: ID!): Comment!
+  post: PostSubscriptionPayload!
+}
+
+type PostSubscriptionPayload {
+  mutation: String!
+  data: Post!
+}
+
+type CommentSubscriptionPayload {
+  mutation: String!
+  data: Comment!
 }
 
 type User {
@@ -60,4 +75,16 @@ input CreateCommentInput {
   Content: String!
   UserId: ID!
   PostId: ID!
+}
+
+input UpdatePostInput {
+  Id: ID!
+  Title: String
+  Body: String
+  Published: Boolean
+}
+
+input UpdateCommentInput {
+  Id: ID!
+  Content: String!
 }
