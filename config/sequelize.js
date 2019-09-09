@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize';
+export const Sequelize = require('sequelize');
 import { dbConfig } from './db';
 
 const Op = Sequelize.Op;
@@ -39,7 +39,7 @@ const operatorsAliases = {
   $col: Op.col
 };
 
-export const sequelize = new Sequelize(dbConfig.name, dbConfig.username, dbConfig.password, {
+const sequelize = new Sequelize(dbConfig.name, dbConfig.username, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'postgres',
   port: dbConfig.port,
@@ -50,4 +50,7 @@ export const sequelize = new Sequelize(dbConfig.name, dbConfig.username, dbConfi
     acquire: 30000,
     idle: 10000
   },
+  ssl: true
 });
+
+export { sequelize };

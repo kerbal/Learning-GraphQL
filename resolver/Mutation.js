@@ -2,23 +2,12 @@ import uuid from 'uuid';
 import { users } from "../sample resources/users";
 import { posts } from "../sample resources/posts";
 import { comments } from "../sample resources/comments";
+import UserService from '../service/user.service';
 
 const Mutation = {
-  createUser: (parent, args, ctx, info) => {
-    const {name, email, age} = args.data;
-    const emailTaken = users.find(user => user.Email == email);
-    if(emailTaken) {
-      throw new Error('Email has already taken');
-    }
-    else {
-      const newUser = {
-        Id: uuid(),
-        Name: name,
-        Age: age
-      };
-      users.push(newUser);
-      return newUser;
-    }
+  createUser: async (parent, args, ctx, info) => {
+    const user = await UserService.createUser(args.data);
+    return user;
   },
 
   createPost: (parent, args, { pubsub }, info) => {

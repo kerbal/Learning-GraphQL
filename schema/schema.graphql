@@ -2,7 +2,8 @@ type Query {
   me: User!
   post: Post!
   posts: [Post!]!
-  users(name: String): [User!]!
+  users(Name: String): [User!]!
+  user(Id: ID!): User!
   comments: [Comment!]!
 }
 
@@ -52,16 +53,18 @@ type Post {
 
 type Comment {
   Id: ID!
-  Content: String!
+  Body: String!
   UserId: ID!
   PostId: ID!
   Username: String
 }
 
 input CreateUserInput {
+  Username: String!
   Name: String!
   Email: String! 
   Age: Int!
+  Gender: String!
 }
 
 input CreatePostInput {

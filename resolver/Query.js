@@ -1,21 +1,27 @@
-import { users } from "../sample resources/users";
-import { posts } from "../sample resources/posts";
 import { comments } from "../sample resources/comments";
+import UserService from "../service/user.service";
+import PostService from "../service/post.service";
 
 const Query = {
-  me: () => users[0],
-  post: () => posts[0],
-  users: (parent, args, ctx, info) => {
-    if(!args.name) {
-      return users;
+  users: async (parent, args, ctx, info) => {
+    const users = await UserService.getUsers({
+      Name: args.Name
+    });
+    return users;
+  },
+
+  user: async (parent, args, ctx, info) => {
+    const user = await UserService.getUser(args.Id);
+    if(user) {
+      return user;
     }
     else {
-      return users.filter(user => user.Name.toLocaleLowerCase().includes(args.name.toLocaleLowerCase()));
+      throw new Error(`User with Id '${id}' not found!`);
     }
   },
-  posts: () => {
-    return posts.filter(post => post.Published);
-  },
+
+  posts: PostService.getPosts,
+  
   comments: () => {
     return comments
   }
