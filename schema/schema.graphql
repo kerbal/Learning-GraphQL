@@ -1,10 +1,10 @@
 type Query {
   me: User!
   post: Post!
-  posts: [Post!]!
+  posts(User_Id: ID): [Post!]!
   users(Name: String): [User!]!
-  user(Id: ID!): User!
-  comments: [Comment!]!
+  user(Id: ID): User!
+  comments(User_Id: ID, Post_Id: ID): [Comment!]!
 }
 
 type Mutation {
@@ -14,7 +14,7 @@ type Mutation {
   updatePost(data: UpdatePostInput): Post!
   deletePost(Id: ID!): Post
   updateComment(data: UpdateCommentInput): Comment!
-  deleteComment(I: ID!): Comment
+  deleteComment(Id: ID!): Comment
 }
 
 type Subscription {
@@ -35,6 +35,7 @@ type CommentSubscriptionPayload {
 
 type User {
   Id: ID!
+  Username: String!
   Name: String!
   Email: String!
   Age: Int
@@ -56,7 +57,7 @@ type Comment {
   Body: String!
   UserId: ID!
   PostId: ID!
-  Username: String
+  Author: User!
 }
 
 input CreateUserInput {
@@ -71,13 +72,13 @@ input CreatePostInput {
   Title: String!
   Body: String!
   Published: Boolean!
-  AuthorId: ID!
+  User_Id: ID!
 }
 
 input CreateCommentInput {
   Content: String!
-  UserId: ID!
-  PostId: ID!
+  User_Id: ID!
+  Post_Id: ID!
 }
 
 input UpdatePostInput {

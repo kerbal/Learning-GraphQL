@@ -9,6 +9,9 @@ export default class UserService {
           Name: {
             $like: `%${option.Name == undefined ? '' : option.Name}%`
           },
+          Username: {
+            $like: `%${option.Name == undefined ? '' : option.Name}%`
+          },
           Status: true
         }
       });
@@ -52,8 +55,6 @@ export default class UserService {
       if(user) {
         throw new Error(`User with username ${info.Username} has existed!`);
       }
-
-      console.log(info);
 
       user = await User.create({
         ...info,

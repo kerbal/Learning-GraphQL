@@ -6,7 +6,8 @@ Post.init(
   {
     Id: {
       type: Sequelize.UUID,
-      primaryKey: true
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV4
     },
     Title: {
       type: Sequelize.TEXT,

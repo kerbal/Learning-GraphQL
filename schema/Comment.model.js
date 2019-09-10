@@ -7,7 +7,8 @@ Comment.init(
   {
     Id: {
       type: Sequelize.UUID,
-      primaryKey: true
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV4
     },
     Body: {
       type: Sequelize.TEXT,

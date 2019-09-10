@@ -1,8 +1,8 @@
-import { users } from "../sample resources/users";
+import UserService from "../service/user.service";
 
 const Comment = {
-  Username: (parent) => {
-    return users.find(user => user.Id == parent.UserId).Name;
+  Author: async (parent) => {
+    return await UserService.getUser(parent.User_Id);
   }
 };
 

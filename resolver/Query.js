@@ -1,6 +1,6 @@
-import { comments } from "../sample resources/comments";
 import UserService from "../service/user.service";
 import PostService from "../service/post.service";
+import CommentService from "../service/comment.service";
 
 const Query = {
   users: async (parent, args, ctx, info) => {
@@ -20,10 +20,16 @@ const Query = {
     }
   },
 
-  posts: PostService.getPosts,
+  posts: async (parent, args, ctx, info) => {
+    const posts = await PostService.getPosts(args.User_Id);
+    return posts;
+  },
   
-  comments: () => {
-    return comments
+  comments: async (parent, args, ctx, info) => {
+    return await CommentService.getComments({
+      Post_Id: args.Post_Id,
+      User_Id: args.User_Id
+    });
   }
 };
 

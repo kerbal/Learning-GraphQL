@@ -1,12 +1,15 @@
-import { users } from "../sample resources/users";
-import { comments } from "../sample resources/comments";
+import UserService from "../service/user.service";
+import CommentService from "../service/comment.service";
 
 const Post = {
-  Author: (parent) => {
-    return users.find(user => user.Id == parent.AuthorId);
+  Author: async (parent) => {
+    const user = await UserService.getUser(parent.User_Id);
+    return user;
   },
-  Comments: (parent) => {
-    return comments.filter(comment => comment.PostId == parent.Id)
+  Comments: async (parent) => {
+    return await CommentService.getComments({
+      Post_Id: parent.Id
+    });
   }
 };
 
