@@ -1,4 +1,4 @@
-import { sequelize } from "../config/sequelize";
+import { sequelize, Sequelize } from "../config/sequelize";
 import Comment from "../schema/Comment.model";
 import ObjectService from "./object.service";
 
@@ -35,7 +35,9 @@ export default class CommentService {
       }
 
       for(const prop in option) {
-        query.where[prop] = option[prop];
+        if(option[prop]) {
+          query.where[prop] = option[prop];
+        }
       }
 
       const comments = await Comment.findAll(query);
@@ -48,6 +50,22 @@ export default class CommentService {
     }
   }
 
+  static async getComment (Id) {
+    try {
+      const comment = await Comment.findOne({
+        where: {
+          Id,
+          Status: true
+        }
+      });
+      return comment;
+    }
+    catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   static async editComment (info) {
     const t = await sequelize.transaction({
       isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
@@ -56,15 +74,13 @@ export default class CommentService {
     try {
       const Id = info.Id;
       ObjectService.deleteProp(info, ['Id', 'Status']);
-      const comment = await Comment.update({
+      await Comment.update({
         ...info
       },{
         where: {
           Id
         }
       });
-
-      return comment;
     }
     catch (error) {
       await t.rollback();
@@ -79,7 +95,7 @@ export default class CommentService {
     });
 
     try {
-      const comment = await Comment.update({
+      await Comment.update({
         Status: false
       },{
         where: {
@@ -87,7 +103,6 @@ export default class CommentService {
         }
       });
       await t.commit();
-      return comment;
     }
     catch (error) {
       await t.rollback();

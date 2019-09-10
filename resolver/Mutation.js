@@ -14,12 +14,13 @@ const Mutation = {
   },
 
   updatePost: async (parent, args, { pubsub }, info) => {
-    const post = await PostService.editPost(args.data);
-    return post;
+    await PostService.editPost(args.data);
+    return await PostService.getPost(args.data.Id);
   },
 
   deletePost: async (parent, args, { pubsub }, info) => {
-    const post = await PostService.deletePost(args.Id);
+    const post = await PostService.getPost(args.data.Id);
+    await PostService.deletePost(args.Id);
     return post;
   },
 
@@ -29,12 +30,13 @@ const Mutation = {
   },
 
   updateComment: async (parent, args, { pubsub }, info) => {
-    const comment = await CommentService.editComment(args.data);
-    return comment;
+    await CommentService.editComment(args.data);
+    return await CommentService.getComment(args.data.Id);
   },
 
   deleteComment: async (parent, args, { pubsub }, info) => {
-    const comment = await CommentService.deleteComment(args.Id);
+    const comment = await CommentService.getComment(args.data.Id);
+    await CommentService.deleteComment(args.Id);
     return comment;
   }
 };

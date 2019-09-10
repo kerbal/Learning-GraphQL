@@ -72,19 +72,15 @@ export default class PostService {
     try {
       const { Id } = info;
       ObjectService.deleteProp(info, ['User_Id', 'Status']);
-      const post = await Post.update({
+      await Post.update({
         Title: info.Title
       }, {
         where: {
           Id
         },
         transaction: t
-      }).then((result) => {
-        console.log(result);
-        return post;
       });
       await t.commit();
-      return post;
     }
     catch (error) {
       await t.rollback();
@@ -99,7 +95,7 @@ export default class PostService {
     });
 
     try {
-      const post = await Post.update({
+      await Post.update({
         Status: false
       }, {
         where: {
@@ -109,10 +105,9 @@ export default class PostService {
       });
 
       await t.commit();
-      return post;
     }
     catch (error) {
-      await  t.rollback();
+      await t.rollback();
       console.log(error.message);
       throw new Error(error.message);
     }

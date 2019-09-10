@@ -20,6 +20,10 @@ const Query = {
     }
   },
 
+  post: async (parent, args, ctx, info) => {
+    return await PostService.getPost(args.Id);
+  },
+
   posts: async (parent, args, ctx, info) => {
     const posts = await PostService.getPosts(args.User_Id);
     return posts;

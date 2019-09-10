@@ -3,11 +3,11 @@ import CommentService from "../service/comment.service";
 
 const User = {
   Posts: async (parent) => {
-    return await PostService.getPosts(parent.User_Id);
+    return await PostService.getPosts(parent.Id);
   },
   Comments: async (parent) => {
     return await CommentService.getComments({
-      User_Id: parent.User_Id
+      User_Id: parent.Id
     });
   }
 };
